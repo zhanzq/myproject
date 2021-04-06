@@ -33,7 +33,7 @@ class Role(db.Model): #第五课内容
                 False  # grants all permissions
             )
         }
-        for r in roles:
+        for r in ["User", "Administrator"]:
             role = Role.query.filter_by(name=r).first()
             if role is None:
                 role = Role(name=r)
@@ -54,7 +54,7 @@ class User(UserMixin, db.Model):  #第二课增加内容
     username = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))  #第五课内容
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), default=1)  #第五课内容
 
     def __init__(self, **kwargs): #第五课内容
         super(User, self).__init__(**kwargs)

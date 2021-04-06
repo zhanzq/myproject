@@ -1,0 +1,118 @@
+<!--第四课内容 -->
+{% extends 'base/layout.html' %}
+
+<!--第四课内容 下面是正文-->
+{% block content %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{{tag}}</h5>
+                    </div>
+                    <form action="/pv/query" method="POST">
+                        <div class="col-sm-2 "><label><input name="s_option" value="room_id" type="checkbox">直播间ID</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="ttl_per_nm" type="checkbox">进入直播间总人数</label></div>
+
+                   <!--&lt;!&ndash;<input class="span12" name="email" type="text" placeholder="E-mail address" value="{{ email }}">&ndash;&gt;-->
+                   <!--&lt;!&ndash;<input class="span12" name="password" type="password" placeholder="Your password">&ndash;&gt;-->
+                    <!--<div class="row">-->
+                        <div class="col-sm-2 "><label><input name="s_option" value="max_oln_nm"  type="checkbox">最大在线人数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="avg_oln_nm"  type="checkbox">平均在线人数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="prd_cmt_nm"  type="checkbox">评论数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="prd_lik_nm"  type="checkbox">点赞数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="inc_fan_nm"  type="checkbox">新增粉丝数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="fan_per_rt"  type="checkbox">进粉率</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="avg_wth_tm"  type="checkbox">人均观看时长</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="prd_shw_nm"  type="checkbox">商品曝光人数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="prd_clk_nm"  type="checkbox">商品点击人数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="pay_per_nm"  type="checkbox">成交人数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="prd_oln_nm"  type="checkbox">上架商品数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="pay_ord_nm"  type="checkbox">成交订单量</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="prd_shw_rt"  type="checkbox">商品点击率</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="pay_per_rt"  type="checkbox">曝光转化率</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="pay_prd_nm"  type="checkbox">成交商品数</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="pay_moneys"  type="checkbox">成交金额</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="person_val"  type="checkbox">人均价值</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="ord_per_rt"  type="checkbox">订单创建率</label></div>
+                        <div class="col-sm-2 "><label><input name="s_option" value="ord_pay_rt"  type="checkbox">创建成交率</label></div>
+                        <input class="btn-glow primary login" type="submit" name="query" value="查 询">
+                        <input class="btn-glow primary login" type="submit" name="compare" value="对 比">
+                    </form>
+                    <!--</div>-->
+                    <div class="ibox-content">
+                        <div class="row">
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                    <tr>
+                                        {% for caption in captions %}
+                                            <td>{{caption}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if current_user.role_id == 2 %}
+                                            {% for room in rooms %}
+                                                <tr>
+                                                    {% for item in room %}
+                                                        <td>{{item}}</td>
+                                                    {% endfor %}
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+<!--                                        {% for room in rooms %}-->
+<!--                                            <tr>-->
+<!--                                                <td>{{room.id}}</td>-->
+<!--                                                <td>{{room.title}}</td>-->
+<!--                                                <td>{{room.create_time}}</td>-->
+<!--                                                <td>{{room.finish_time}}</td>-->
+<!--                                                <td>{{room.watch_pv_entrance_show}}</td>-->
+<!--                                                <td>{{room.click_pv_entrance}}</td>-->
+<!--                                                <td>{{room.click_pv_product}}</td>-->
+<!--                                                <td>{{room.pay_gmv}}</td>-->
+<!--                                            </tr>-->
+<!--                                      {% endfor %}-->
+                                      {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function() {
+          $('.dataTables-example').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
+
+                    {extend: 'print',
+                     customize: function (win){
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                    }
+                    }
+                ]
+            });
+    })
+
+
+</script>
+
+
+{% endblock %}
+
+

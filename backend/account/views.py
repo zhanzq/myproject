@@ -36,6 +36,7 @@ def admin_required(f): #第五课新增
 @account.route('/register',methods=(["GET","POST"]))  #第二课增加内容
 #上面的链接，绑定的就是这个方法，我们给浏览器或者接口请求 一个json格式的返回
 def register():  #第二课增加内容
+    Role.insert_roles()
     if request.method == 'POST':
         try:
             form = request.form
@@ -71,12 +72,12 @@ def logout():
 @account.route('/users')
 @login_required
 def user_list(): #第五课新增
-    Role.insert_roles()
+    # Role.insert_roles()
     user_list = User.query.outerjoin(Role, User.role_id == Role.id).all()
-    return layout('/account/users.html',users=user_list)
+    return layout('/account/users.html', users=user_list)
 
 
-@account.route('/edituser',methods=(["GET","POST"]))
+@account.route('/edituser',methods=(["GET", "POST"]))
 @login_required
 def user_edit(): #第五课新增
     if request.method == 'POST':

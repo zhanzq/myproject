@@ -5,8 +5,12 @@ Created by liaoyangyang1 on 2018/8/21 下午3:40.
 """
 
 from flask_script import Manager, Server
-from backend import create_app,db #第二课新增
+from backend import create_app, db #第二课新增
+from backend.models.UserModel import User, Role
+from backend.models.RoomModel import Room
 from flask_migrate import Migrate #第二课新增
+from douyin import get_room_info
+import pdb
 
 app = create_app()
 migrate = Migrate(app, db) #第二课新增
@@ -31,7 +35,7 @@ def make_shell_context():
     type: `Dict`
     """
     # 确保有导入 Flask app object，否则启动的 CLI 上下文中仍然没有 app 对象
-    return dict(app=app,db=db) #第二课新增
+    return dict(app=app, db=db) #第二课新增
 
 #创建数据库脚本
 @manager.command
@@ -42,6 +46,12 @@ def create_db(): #第二课新增
     """
     db.create_all()
     db.session.commit()
+
+
+# 倒入数据
+@manager.command
+def import_rooms():
+    get_room_info()
 
 @manager.command
 def recreate_db(): #第二课新增
